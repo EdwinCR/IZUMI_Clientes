@@ -1,26 +1,18 @@
 # IZUMI_Clientes — Gestor de clientes IZUMI
 
-Proyecto para la gestión de clientes IZUMI. El repositorio incluye:
-- Scripts de **Base de Datos** (carpeta `BD`)
-- **Backend** (API/Servicio)
-- **Frontend** en **ASP.NET MVC**
-
-> Nota: Los nombres exactos de soluciones/proyectos, puertos y cadenas de conexión pueden variar según tu configuración local. Este README describe el flujo general de ejecución.
+Repositorio con:
+- **BD**: scripts de base de datos en `BD/`
+- **Backend (API)**: solución/proyecto en `Backend/IZUMI.Clientes/`
+- **Frontend (MVC)**: aplicación web en `Frontend/IZUMIClientes/`
 
 ---
 
 ## Requisitos
 
-### Software
-- **Git**
-- **SQL Server** (o el motor definido por el proyecto) + una herramienta para ejecutar scripts (por ejemplo: SSMS)
-- **.NET SDK / Visual Studio** (según el tipo de proyecto)
-  - Recomendado: **Visual Studio 2022** con workloads de **ASP.NET y desarrollo web**
-- (Opcional) **IIS Express** (si se usa desde Visual Studio)
-
-### Accesos / Configuración previa
-- Permisos para crear base de datos, tablas, usuarios, etc.
-- Tener disponibles credenciales/servidor de base de datos (local o remoto).
+- Git
+- SQL Server (recomendado 2019+) + SSMS (u otra herramienta para ejecutar scripts)
+- .NET SDK **8.0** (según los README de los proyectos)
+- Visual Studio 2022 (recomendado)
 
 ---
 
@@ -33,80 +25,96 @@ cd IZUMI_Clientes
 
 ---
 
-## 2) Preparar la Base de Datos (carpeta `BD`)
+## 2) Preparar Base de Datos (carpeta `BD/`)
 
-1. Ubica la carpeta **`BD`** dentro del repositorio.
-2. **Sigue el orden indicado en esa carpeta** (por ejemplo: `Paso 1`, `Paso 2`, `01_`, `02_`, etc.).
-3. Ejecuta los scripts en tu servidor SQL:
-   - Creación de la base de datos
-   - Creación de tablas/objetos
-   - Inserts iniciales (si aplica)
-   - Stored procedures / vistas / funciones (si aplica)
-   - Usuarios/permisos (si aplica)
+1. Abre la carpeta `BD/`.
+2. Ejecuta los scripts **en el orden indicado** dentro de la carpeta (por ejemplo: `01_...`, `02_...` o “Paso 1 / Paso 2”, etc.).
+3. Verifica que la BD quede creada y con datos iniciales si aplica.
 
-> Importante: Ejecuta los scripts **en el orden** indicado por la carpeta `BD`. Si hay un README o un archivo de pasos dentro de `BD`, úsalo como fuente principal.
+> Importante: el orden exacto depende de cómo estén organizados los scripts dentro de `BD/`.
 
 ---
 
-## 3) Configurar el Backend (API / Servicio)
+## 3) Ejecutar Backend (API) — `Backend/IZUMI.Clientes/`
 
-1. Abre la solución/proyecto del backend en Visual Studio (o con `dotnet`).
-2. Configura la **cadena de conexión** a la BD creada en el paso anterior.
-   - Busca el archivo de configuración típico:
-     - `appsettings.json` / `appsettings.Development.json` (si es .NET Core/5+/6+)
-     - `Web.config` (si es .NET Framework)
-3. Verifica valores comunes:
-   - `Server` / `Data Source`
-   - `Database` / `Initial Catalog`
-   - `User Id` / `Password` o `Trusted_Connection=True`
-4. Ejecuta el backend:
-   - Desde Visual Studio: seleccionar el proyecto de API/Servicio como **Startup Project** y presionar **Run (F5)**.
-   - O por CLI (si aplica): `dotnet run` dentro del proyecto del backend.
+### 3.1 Configurar cadena de conexión
+Configura la cadena de conexión en el proyecto de API (normalmente en `appsettings.json` del proyecto **`IZUMI.Clientes.Api`**), por ejemplo:
 
-### Validación rápida
-- Comprueba que el backend inicia sin errores.
-- Identifica la URL base (por ejemplo `https://localhost:xxxx/` o `http://localhost:xxxx/`).
-- Si existe Swagger, intenta abrir `/swagger`.
+- `Backend/IZUMI.Clientes/IZUMI.Clientes.Api/appsettings.json` (ruta aproximada; puede variar dentro de la solución)
 
----
+Ajusta los valores de servidor, base de datos y credenciales según tu entorno.
 
-## 4) Configurar y ejecutar el Frontend (MVC)
+### 3.2 Restaurar, compilar y ejecutar (CLI)
+Desde la raíz del repo:
 
-1. Abre el proyecto **MVC** (frontend) en Visual Studio.
-2. Configura el endpoint del backend (si el MVC consume la API):
-   - Puede estar en `appsettings.json`, `Web.config`, variables de entorno o una clase de configuración.
-3. Establece el proyecto MVC como **Startup Project**.
-4. Ejecuta el frontend (F5).
+```bash
+cd Backend/IZUMI.Clientes
+dotnet restore
+dotnet build
+```
 
-### Validación rápida
-- Abre el sitio MVC en el navegador.
-- Prueba un flujo básico (login/listados/alta de cliente) para confirmar comunicación con la API y la BD.
+Para correr la API, ejecuta el proyecto `IZUMI.Clientes.Api` (entra a la carpeta del proyecto API y corre):
 
----
+```bash
+# ejemplo (ajusta la ruta si tu .csproj está en otra subcarpeta)
+cd IZUMI.Clientes.Api
+dotnet run
+```
 
-## Orden recomendado de ejecución (resumen)
+Según el README del backend, al ejecutar la API normalmente queda disponible en algo similar a:
+- HTTP: `http://localhost:5283`
+- HTTPS: `https://localhost:7283`
+- Swagger: `https://localhost:7283/swagger`
 
-1. **Clonar repo**
-2. **Ejecutar scripts de BD** (carpeta `BD`, siguiendo el orden)
-3. **Levantar Backend (API/Servicio)**
-4. **Levantar Frontend (MVC)**
+> Si tus puertos cambian, revisa `Properties/launchSettings.json` del proyecto API.
 
 ---
 
-## Troubleshooting (común)
+## 4) Ejecutar Frontend (MVC) — `Frontend/IZUMIClientes/`
 
-- **Error de conexión a BD**: revisa cadena de conexión, nombre de servidor, usuario/clave, puerto, firewall.
-- **Scripts fallan por orden**: ejecuta exactamente en el orden definido en `BD`.
-- **CORS / llamadas a API**: si el frontend consume API en otro puerto, revisa configuración CORS en backend.
-- **Puertos ocupados**: cambia el puerto de ejecución en launchSettings/IIS Express.
+### 4.1 Configurar URL del Backend (API)
+En el frontend MVC, configura la URL de la API en:
+
+- `Frontend/IZUMIClientes/appsettings.json`
+
+Ejemplo (según README del frontend):
+
+```json
+{
+  "HostWebAPIs": {
+    "IZUMIAPI": "http://localhost:5141/api/IZUMI/"
+  }
+}
+```
+
+Cambia ese valor para que apunte a la URL real donde levantó tu backend.
+Por ejemplo, si tu backend corre en `https://localhost:7283`, típicamente sería:
+
+- `https://localhost:7283/api/IZUMI/`
+
+### 4.2 Restaurar, compilar y ejecutar (CLI)
+
+```bash
+cd Frontend/IZUMIClientes
+dotnet restore
+dotnet build
+dotnet run
+```
+
+Luego abre la URL que te muestre la consola (o la configurada en launchSettings).
 
 ---
 
-## Notas
+## Orden recomendado de ejecución
 
-Si compartes:
-- el nombre del proyecto/solución del backend y del MVC,
-- el tipo exacto (.NET Framework vs .NET 6/7/8),
-- y dónde está la cadena de conexión,
+1. Clonar repositorio
+2. Ejecutar scripts de BD (`BD/`) en el orden indicado
+3. Levantar Backend (API) (`Backend/IZUMI.Clientes/`)
+4. Levantar Frontend (MVC) (`Frontend/IZUMIClientes/`)
 
-puedo ajustar este README para que quede 100% alineado a la estructura real del repositorio.
+---
+
+## Referencias rápidas (README internos)
+
+- Backend: `Backend/IZUMI.Clientes/README.md`
+- Frontend: `Frontend/IZUMIClientes/README.md`
