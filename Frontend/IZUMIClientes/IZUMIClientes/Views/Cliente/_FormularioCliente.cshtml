@@ -1,0 +1,96 @@
+﻿@model ClienteViewModel
+
+
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["MensajeError"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<form asp-action="@ViewData["Action"]" method="post">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="TipoDocumentoId"></label>
+            <select asp-for="TipoDocumentoId" class="form-control" asp-items="@(new SelectList(Model.TiposDocumento, "Id", "Nombre"))">
+                <option value="">-- Seleccione Tipo Documento --</option>
+            </select>
+            <span asp-validation-for="TipoDocumentoId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="NumeroDocumento"></label>
+            <input asp-for="NumeroDocumento" class="form-control" />
+            <span asp-validation-for="NumeroDocumento" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="PrimerNombre"></label>
+            <input asp-for="PrimerNombre" class="form-control" />
+            <span asp-validation-for="PrimerNombre" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="SegundoNombre"></label>
+            <input asp-for="SegundoNombre" class="form-control" />
+            <span asp-validation-for="SegundoNombre" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="PrimerApellido"></label>
+            <input asp-for="PrimerApellido" class="form-control" />
+            <span asp-validation-for="PrimerApellido" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="SegundoApellido"></label>
+            <input asp-for="SegundoApellido" class="form-control" />
+            <span asp-validation-for="SegundoApellido" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="FechaNacimiento"></label>
+            <input asp-for="FechaNacimiento" type="date" class="form-control" />
+            <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" type="email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Direccion"></label>
+            <input asp-for="Direccion" class="form-control" />
+            <span asp-validation-for="Direccion" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Celular"></label>
+            <input asp-for="Celular" type="number" class="form-control" />
+            <span asp-validation-for="Celular" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="PlanId"></label>
+            <select asp-for="PlanId" class="form-control" asp-items="@(new SelectList(Model.Planes, "Id", "Nombre"))">
+                <option value="">-- Seleccione Plan --</option>
+            </select>
+            <span asp-validation-for="PlanId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>

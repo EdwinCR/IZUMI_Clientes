@@ -1,0 +1,10 @@
+﻿@model ClienteViewModel
+
+@{
+    ViewData["Title"] = "Crear Cliente";
+    ViewData["Action"] = "Crear";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@await Html.PartialAsync("_FormularioCliente")

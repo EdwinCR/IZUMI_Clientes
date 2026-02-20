@@ -1,0 +1,116 @@
+﻿@model ListaPaginadaViewModel<ClienteViewModel>;
+@{
+    ViewData["Title"] = "Home Page";
+}
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["MensajeExito"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["MensajeError"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="container">
+    <div>
+        <h2>Lista de Clientes</h2>
+    </div>
+    <a asp-action="Crear" class="btn btn-success mb-3">Nuevo Cliente</a>
+    <table class="table table-striped table-bordered">
+        <thead class="table-info">
+            <tr>
+                <th>Tipo Identificación</th>
+                <th>Número Identificación</th>
+                <th>Primer Nombre</th>
+                <th>Segundo Nombre</th>
+                <th>Primer Apellido</th>
+                <th>Segundo Apellido</th>
+                <th>Fecha Nacimiento</th>
+                <th>Email</th>
+                <th>Dirección</th>
+                <th>Celular</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items.Count > 0)
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.TipoDocumento.Nombre</td>
+                        <td>@item.NumeroDocumento</td>
+                        <td>@item.PrimerNombre</td>
+                        <td>@item.SegundoNombre</td>
+                        <td>@item.PrimerApellido</td>
+                        <td>@item.SegundoApellido</td>
+                        <td>@item.FechaNacimiento.ToString("dd-MM-yyyy")</td>
+                        <td>@item.Email</td>
+                        <td>@item.Direccion</td>
+                        <td>@item.Celular</td>
+                        <td>
+                            <a asp-action="Editar" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Editar</a>
+
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="@item.Id" data-nombre="@item.PrimerNombre">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="11">No se encontraron clientes.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Confirmación Eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formEliminar" method="post" asp-action="Eliminar">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro que desea eliminar al cliente <strong id="nombreCliente"></strong>?</p>
+                    <input type="hidden" id="clienteId" name="id" value="" />
+                    @Html.AntiForgeryToken()
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var confirmDeleteModal = document.getElementById('confirmDeleteModal')
+    confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget
+        var clienteId = button.getAttribute('data-id')
+        var clienteNombre = button.getAttribute('data-nombre')
+
+        // Actualizar contenido modal
+        var modalTitle = confirmDeleteModal.querySelector('.modal-title')
+        var nombreSpan = confirmDeleteModal.querySelector('#nombreCliente')
+        var inputId = confirmDeleteModal.querySelector('#clienteId')
+
+        nombreSpan.textContent = clienteNombre
+        inputId.value = clienteId
+    })
+</script>

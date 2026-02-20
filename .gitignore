@@ -1,0 +1,73 @@
+# Build Folders (you can keep bin if you'd like to commit dlls and pdbs)
+bin/
+obj/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+.vscode-test/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# DotNet specific files
+*.log
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# StyleCop
+StyleCopReport.xml
+
+# ASP.NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+Generated_Code/
+
+# Npm Packages
+node_modules/
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Environment Variables
+.env
+.env.*.local
+
+# Logs
+*.log
+
+# Azure Functions
+local.settings.json
+
+# Mac system files
+.DS_Store
+
+# Rider
+.idea/
+*.sln.iml
+*.cs.iml
+
+# Visual Studio
+.vs/
+/WebAPI/WebAPI/Properties/PublishProfiles/FolderProfile.pubxml
