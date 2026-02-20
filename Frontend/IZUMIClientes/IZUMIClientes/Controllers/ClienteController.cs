@@ -35,7 +35,8 @@ namespace IZUMIClientes_.Controllers
             {
                 Items = clientes.Data == null ? new List<ClienteViewModel>() : clientes.Data,
                 NumeroPagina = tamanioPagina,
-                TotalPaginas = clientes.TotalPages
+                TotalPaginas = clientes.TotalPages,
+                PaginaActual = pagina
             };
 
             TempData["MensajeExito"] = null;
