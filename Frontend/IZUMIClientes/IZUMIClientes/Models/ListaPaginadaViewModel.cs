@@ -5,6 +5,6 @@
         public List<T> Items { get; set; }
         public int TotalPaginas { get; set; }
         public int NumeroPagina { get; set; }
-       
+        public int PaginaActual { get; set; }
     }
 }
